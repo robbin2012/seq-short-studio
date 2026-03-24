@@ -1,6 +1,16 @@
 "use client"
 
 import { TooltipTrigger } from "@/seq/components/ui/tooltip"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/seq/components/ui/dropdown-menu"
 
 import { memo } from "react"
 import type { SnapConfig } from "../hooks/use-timeline-snap"
@@ -11,7 +21,6 @@ import {
   SplitIcon,
   TrashIcon,
   ChevronDownIcon,
-  CheckIcon,
   ZoomInIcon,
   ZoomOutIcon,
   EyeIcon,
@@ -425,68 +434,76 @@ export const TimelineToolbar = memo(function TimelineToolbar({
           )}
 
           {/* Snapping Controls */}
-          <div className="relative" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center bg-[var(--hover-overlay)] rounded-md p-0.5 border border-[var(--border-default)]">
-              <button
-                onClick={onToggleSnap}
-                className={`p-1 rounded transition-colors ${
-                  snapConfig.enabled
-                    ? "text-[var(--accent-text)] bg-[var(--accent-bg-subtle)]"
-                    : "text-[var(--text-muted)] hover:text-white"
-                }`}
-                title="Toggle Snapping (N)"
-              >
-                <MagnetIcon className="w-3.5 h-3.5" />
-              </button>
-              <div className="w-px h-3.5 bg-[var(--border-default)] mx-0.5" />
-              <button
-                onClick={() => onSetShowSnapMenu(!showSnapMenu)}
-                className={`p-0.5 rounded hover:bg-[var(--hover-overlay)] text-[var(--text-tertiary)] ${
-                  showSnapMenu ? "bg-[var(--hover-overlay)] text-[var(--text-secondary)]" : ""
-                }`}
-              >
-                <ChevronDownIcon className="w-3 h-3" />
-              </button>
+          <DropdownMenu open={showSnapMenu} onOpenChange={onSetShowSnapMenu}>
+            <div className="relative" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center bg-[var(--hover-overlay)] rounded-md p-0.5 border border-[var(--border-default)]">
+                <button
+                  onClick={onToggleSnap}
+                  className={`p-1 rounded transition-colors ${
+                    snapConfig.enabled
+                      ? "text-[var(--accent-text)] bg-[var(--accent-bg-subtle)]"
+                      : "text-[var(--text-muted)] hover:text-white"
+                  }`}
+                  title="Toggle Snapping (N)"
+                >
+                  <MagnetIcon className="w-3.5 h-3.5" />
+                </button>
+                <div className="w-px h-3.5 bg-[var(--border-default)] mx-0.5" />
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={`p-0.5 rounded hover:bg-[var(--hover-overlay)] text-[var(--text-tertiary)] ${
+                      showSnapMenu ? "bg-[var(--hover-overlay)] text-[var(--text-secondary)]" : ""
+                    }`}
+                  >
+                    <ChevronDownIcon className="w-3 h-3" />
+                  </button>
+                </DropdownMenuTrigger>
+              </div>
             </div>
 
-            {showSnapMenu && (
-              <div className="absolute top-full left-0 mt-1 w-48 bg-[var(--surface-0)] border border-[var(--border-default)] rounded-lg shadow-xl py-2 z-50 flex flex-col gap-1">
-                <div className="px-3 py-1 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
-                  Snap Targets
-                </div>
-                {[
-                  { key: "toGrid" as const, label: "Snap to Grid" },
-                  { key: "toClips" as const, label: "Snap to Clips" },
-                  { key: "toPlayhead" as const, label: "Snap to Playhead" },
-                ].map((opt) => (
-                  <div
-                    key={opt.key}
-                    className="px-3 py-1.5 hover:bg-[var(--hover-overlay)] cursor-pointer flex items-center justify-between group"
-                    onClick={() => onToggleSnapOption(opt.key)}
-                  >
-                    <span className="text-xs text-[var(--text-secondary)]">{opt.label}</span>
-                    {snapConfig[opt.key] && <CheckIcon className="w-3 h-3 text-[var(--accent-text)]" />}
-                  </div>
-                ))}
-                <div className="h-px bg-[var(--border-default)] my-1" />
-                <div className="px-3 py-1 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
-                  Grid Interval
-                </div>
+            <DropdownMenuContent
+              align="start"
+              className="w-48 bg-[var(--surface-0)] border-[var(--border-default)] text-[var(--text-secondary)]"
+            >
+              <DropdownMenuLabel className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                Snap Targets
+              </DropdownMenuLabel>
+              {[
+                { key: "toGrid" as const, label: "Snap to Grid" },
+                { key: "toClips" as const, label: "Snap to Clips" },
+                { key: "toPlayhead" as const, label: "Snap to Playhead" },
+              ].map((opt) => (
+                <DropdownMenuCheckboxItem
+                  key={opt.key}
+                  checked={snapConfig[opt.key]}
+                  className="text-xs text-[var(--text-secondary)] focus:bg-[var(--hover-overlay)] focus:text-[var(--text-primary)]"
+                  onCheckedChange={() => onToggleSnapOption(opt.key)}
+                  onSelect={(event) => event.preventDefault()}
+                >
+                  {opt.label}
+                </DropdownMenuCheckboxItem>
+              ))}
+              <DropdownMenuSeparator className="bg-[var(--border-default)]" />
+              <DropdownMenuLabel className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                Grid Interval
+              </DropdownMenuLabel>
+              <DropdownMenuRadioGroup
+                value={String(snapConfig.gridInterval)}
+                onValueChange={(value) => onSetGridInterval(Number(value))}
+              >
                 {[0.1, 0.25, 0.5, 1.0].map((val) => (
-                  <div
+                  <DropdownMenuRadioItem
                     key={val}
-                    className="px-3 py-1.5 hover:bg-[var(--hover-overlay)] cursor-pointer flex items-center justify-between"
-                    onClick={() => onSetGridInterval(val)}
+                    value={String(val)}
+                    className="text-xs text-[var(--text-secondary)] focus:bg-[var(--hover-overlay)] focus:text-[var(--text-primary)]"
+                    onSelect={(event) => event.preventDefault()}
                   >
-                    <span className="text-xs text-[var(--text-secondary)]">{val}s</span>
-                    {snapConfig.gridInterval === val && (
-                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)]" />
-                    )}
-                  </div>
+                    {val}s
+                  </DropdownMenuRadioItem>
                 ))}
-              </div>
-            )}
-          </div>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Selection Count Badge */}
           {selectedClipCount > 1 && (
