@@ -1,0 +1,15 @@
+.git
+.gitignore
+.next
+node_modules
+.env*
+.codex-dev.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+compose.env

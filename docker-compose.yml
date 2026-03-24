@@ -1,0 +1,17 @@
+services:
+  short-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: seq-short-studio:latest
+    container_name: seq-short-studio
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+      AI_GATEWAY_API_KEY: ${AI_GATEWAY_API_KEY:-}
+      FAL_KEY: ${FAL_KEY:-}
+      BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN:-}
