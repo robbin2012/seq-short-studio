@@ -87,7 +87,7 @@ const LibraryItem = memo(function LibraryItem({
             </span>
           </div>
 
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-1">
             <button
               className="p-1.5 hover:bg-red-900/30 rounded text-neutral-600 hover:text-red-400 transition-all transform hover:scale-110"
               title="Remove from Library"

@@ -60,11 +60,9 @@ export function AppSidebar({ activeView, isPanelOpen, onViewChange, onTogglePane
       <aside className="fixed left-0 top-0 bottom-0 z-50 flex w-[60px] flex-col border-r border-[var(--border-default)] bg-[var(--surface-0)]">
         {/* Logo */}
         <div className="flex h-14 items-center justify-center border-b border-[var(--border-default)]">
-          <Link href="/" className="flex items-center justify-center group">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-lg transition-all group-hover:shadow-xl">
-              <LogoIcon className="h-4 w-4 text-black" />
-            </div>
-          </Link>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-lg">
+            <LogoIcon className="h-4 w-4 text-black" />
+          </div>
         </div>
 
         {/* Main Navigation */}

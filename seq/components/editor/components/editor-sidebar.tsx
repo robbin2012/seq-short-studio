@@ -56,7 +56,7 @@ function EditorSidebarInner({ activeView, isPanelOpen, onViewChange, onTogglePan
           isCollapsed && "relative inline-block h-auto w-full max-w-28 p-2 pt-4 pb-0",
         )}
       >
-        <a className="relative inline-block h-auto w-full max-w-28 p-2 " href="/">
+        <div className="relative inline-block h-auto w-full max-w-28 p-2 ">
           <span
             className={cn(
               " flex items-center justify-center drop-shadow-logo [&_path]:transition-[d] [&_path]:duration-[3s] h-full w-full object-contain drop-shadow-logo md:drop-shadow-none ",
@@ -64,7 +64,7 @@ function EditorSidebarInner({ activeView, isPanelOpen, onViewChange, onTogglePan
           >
             <LogoIcon className="h-7 w-7 flex-shrink-0" />
           </span>
-        </a>
+        </div>
       </SidebarHeader>
 
       <SidebarContent className="px-0">

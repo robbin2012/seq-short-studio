@@ -2,9 +2,6 @@
 import { memo, useState, useRef, useEffect } from "react"
 import { DownloadIcon, UndoIcon, RedoIcon, SaveIcon, FolderOpenIcon } from "./icons"
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/seq/components/ui/tooltip"
-import { useSidebar } from "@/seq/components/ui/sidebar"
-import { cn } from "@/seq/lib/utils"
-import { ArrowLeftFromLine, PanelLeft } from "lucide-react"
 import { IconTypelogo } from "@/seq/components/typelogo"
 
 export interface EditorHeaderProps {
@@ -36,7 +33,6 @@ export const EditorHeader = memo(function EditorHeader({
 }: EditorHeaderProps) {
   const [isFileMenuOpen, setIsFileMenuOpen] = useState(false)
   const fileMenuRef = useRef<HTMLDivElement>(null)
-  const { toggleVisible, visible } = useSidebar()
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -52,24 +48,6 @@ export const EditorHeader = memo(function EditorHeader({
     <TooltipProvider delayDuration={300}>
       <header className="h-12 border-b border-[var(--border-default)] bg-[var(--surface-0)] flex items-center justify-between px-4 z-40 shrink-0">
         <div className="flex items-center gap-3">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={toggleVisible}
-                className="relative inline-block font-sans font-medium text-center before:absolute before:inset-0 before:pointer-events-none before:rounded-[inherit] before:border before:border-transparent before:bg-transparent after:absolute after:inset-0 after:pointer-events-none after:rounded-[inherit] after:bg-transparent after:opacity-0 enabled:hover:after:opacity-100 transition duration-75 before:transition before:duration-75 after:transition after:duration-75 select-none cursor-pointer text-[15px] leading-[24px] rounded-md aspect-square p-2 text-foreground-primary bg-transparent enabled:hover:before:bg-overlay-on-primary disabled:after:bg-background-primary disabled:after:opacity-50"
-              >
-                {visible ? (
-                  <ArrowLeftFromLine className={cn("w-4 h-4 flex-shrink-0")} />
-                ) : (
-                  <PanelLeft className={cn("w-4 h-4 flex-shrink-0")} />
-                )}
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" className="text-xs">
-              {visible ? "Hide Sidebar" : "Show Sidebar"}
-            </TooltipContent>
-          </Tooltip>
-
           <IconTypelogo className="text-white" />
 
           <span className="text-[10px] text-[var(--text-tertiary)] border border-[var(--border-emphasis)] rounded-full px-2 py-0.5">
